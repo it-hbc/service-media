@@ -1,0 +1,96 @@
+extends layout
+
+block search
+  .pageheader-content.row
+    .col-full
+      .featured
+        .featured__column.featured__column--big
+          .entry(style="background-image:url('/images/big.jpg');")
+            .entry__content
+              h1
+                a(href="#0") Search
+              .entry__info
+                form
+                  div.form-group
+                    input.form-control(type="text", id="search")
+        if latest_status
+          .featured__column.featured__column--small
+            .entry(style="background-image:url("+ latest_thumbnail + ")")
+              .entry__content
+                h1
+                  if latest_status === "completed"
+                    a(href="/download/"+latest_file_id)= latest_title
+                  else
+                    a(href="#0")= latest_title
+                .entry__info
+                  p= latest_status
+block content
+  .row.masonry-wrap
+    .masonry#results
+      .grid-sizer
+
+block scripts
+  script.
+    // $(document).on("click", ".dynamic_modal", function(){
+    //   $("#modal .modal-title").empty();
+    //   $("#modal .modal-title").text($(this).data("title"));
+    //   $("#modal .modal-body").empty();
+    //   $("#modal .modal-body").append('<iframe height="315" width="560" src="'+$(this).data("target")+'" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>');
+    //   $("#modal").modal();
+    // });
+    // $(document).on("click", "#modal .close", function() {
+    //   $("#modal").modal('hide');
+    //   $("#modal .modal-title").empty();
+    //   $("#modal .modal-body").empty();
+    // });
+    var clMasonryFolio = function () {
+
+      var containerBricks = $('.masonry');
+
+      containerBricks.imagesLoaded(function () {
+        containerBricks.masonry({
+          itemSelector: '.masonry__brick',
+          percentPosition: true,
+          resize: true
+        });
+      });
+
+
+      // layout Masonry after each image loads
+      containerBricks.imagesLoaded().progress(function () {
+        containerBricks.masonry('layout');
+      });
+    };
+    $("#search").on('keyup', function() {
+        var searchTerm = $(this)[0].value;
+        $.ajax({
+          url: "/search/"+searchTerm
+        })
+        .done(function (data) {
+          $("#results").empty();
+          $("#results").append("<div class='grid-sizer'></div>");
+          data.results.forEach(function(item){
+            var card = "<article class='masonry__brick entry format-video d-flex align-items-stretch' data-aos='fade-up'>\n";
+            card += "  <div class='entry__thumb video-image'>\n";
+            card += "    <a href='https://www.youtube.com/embed/" + item.id + "' data-lity>\n";
+            card += "      <img data-target='https://www.youtube.com/embed/" + item.id + "' data-title='"+item.title+"' class='dynamic_modal card-img-top' src='" + item.thumbnails.high.url + "'>\n";
+            card += "    </a>\n";
+            card += "  </div>\n";
+            card += "  <div class='entry__text'>\n";
+            card += "    <div class='entry__header'>\n";
+            card += "      <h1 class='entry__title'>"+ item.title +"</h1>\n";
+            card += "    </div>\n";
+            card += "    <div class='entry__excerpt'>\n";
+            card += "      <p>" + item.description + "</p>\n";
+            card += "      <div class='row'>\n";
+            card += "        <a href='/download/"+ item.id + "/v' class='btn full-width btn--primary'>Video</a>";
+            card += "        <a href='/download/"+ item.id + "/m' class='btn full-width btn--stroke'>Music</a>";
+            card += "      </div>\n";
+            card += "    </div>\n";
+            card += "  </div>\n";
+            card += "</article>\n";
+            $("#results").append(card);
+          });
+          clMasonryFolio();
+        });
+    });

@@ -1,0 +1,31 @@
+extends layout
+
+block search
+  .pageheader-content.row
+    .col-full
+      .featured
+        .featured__column.featured__column--big
+          .entry(style="background: rgba(255,255,255,.3)")
+            .entry__content
+              h1
+                a(href="#0") Login
+              .entry__info
+                form(id="login", method="POST", action="/login")
+                  div.form-group
+                    label(for="username") Username
+                    input.form-control(type="text", name="username", id="username")
+                  div.form-group
+                    label(for="password") Password
+                    input.form-control(type="password", name="password", id="password")
+        .featured__column.featured__column--small
+          .entry(style="background: rgba(255,255,255,.3)")
+            .entry__content
+              h1
+                a(href="#0") &nbsp;
+              .entry__info
+                button.btn.btn--primary.full-width(onclick="$('#login').submit();") Login
+        .featured__column.featured__column--small
+          .entry(style="background-image:url('/images/login_small.jpg');")
+            .entry__content
+              h1
+                a(href="#0") &nbsp;

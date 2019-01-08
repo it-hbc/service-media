@@ -1,0 +1,39 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    meta(name='description', content='')
+    meta(name='author', content='Mark Otto, Jacob Thornton, and Bootstrap contributors')
+    meta(name='generator', content='Jekyll v3.8.5')
+    title= title
+    // Custom styles for this template
+    link(href='/stylesheets/base.css', rel='stylesheet')
+    link(href='/stylesheets/vendor.css', rel='stylesheet')
+    link(href='/stylesheets/main.css', rel='stylesheet')
+    script(src='/javascripts/modernizr.js')
+    script(src='/javascripts/pace.min.js')
+  body
+    section.s-pageheader.s-pageheader--home
+      include includes/navbar.pug
+      .pageheader-content.row
+        block search
+    section.s-content
+      block content
+
+    .preloader
+      #loader
+        .line-scale
+          div
+          div
+          div
+          div
+          div
+
+    script(src='/javascripts/jquery.min.js')
+    script.
+      window.jQuery || document.write('<script src="/javascripts/jquery.min.js"><\\/script>')
+    script(src='/javascripts/bootstrap.bundle.js')
+    script(src='/javascripts/plugins.js')
+    script(src='/javascripts/main.js')
+    block scripts

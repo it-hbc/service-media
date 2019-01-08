@@ -1,3 +1,5 @@
+.idea
+config/default.json
 # Logs
 logs
 *.log

@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    div.row.mt-5.mb-3
+        div.col-lg-6.offset-lg-3.col-sm-8.offset-sm-2
+            h1 Retrieval Status
+    div.row.mt-5.mb-3
+        div.col
+            table.table.table-striped.table-borderless
+                thead
+                    tr
+                        th File Name
+                        th Video ID
+                        th Status
+                        th Action
+                tbody
+                    each file in files
+                        tr
+                            td= file.file_name
+                            td= file.file_id
+                            td= file.status
+                            td
+                                a(href="/download/" + file.file_id, class="btn btn-sm btn-info") Download

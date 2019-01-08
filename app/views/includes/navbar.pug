@@ -1,0 +1,18 @@
+header.header
+    .header__content.row
+        .header__logo
+            a.logo(href="/")
+                img(src="/images/logo.svg")
+        a.header__toggle-menu(href="#0", title="Menu")
+            span Menu
+        nav.header__nav-wrap
+            h2.header__nav-heading.h6 Site Navigation
+            ul.header__nav
+                if auth
+                    li(class={current: currentUrl === '/'})
+                        a(href="/") Search
+                    li(class={current: currentUrl === '/files'})
+                        a(href="/files") Files
+                    li(class={current: currentUrl === '/logout'})
+                        a(href="/logout") Logout
+            a.header__overlay-close.close-mobile-menu(href="#0") Close
