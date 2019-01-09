@@ -1,0 +1,70 @@
+extends layout
+
+block content
+    .row
+        .s-content__header.col-full
+            h1.s-content__header-title
+                Direct Download
+        .s-content__main.col-full
+            form(action="/link",method="POST")
+                div.form-group
+                    label(for="url") URL
+                    input.full-width(type="text", id="url", name="url")
+                div.form-group
+                    label(for="format") Format
+                    div.row
+                        .col-ten
+                            div.cl-custom-select
+                                select.full-width(id="format", name="format")
+                                    option(value='-1') N/A
+                        .col-two
+                            button.btn--stroke.full-width(id="refresh", disabled="true", onclick="refreshFormats($('#url')[0].value)")
+                                i.fa.fa-fw.fa-refresh
+                input.btn--primary.full-width(type="submit", value="Download")
+
+block scripts
+    script.
+        function ValidURL(str) {
+            var pattern = new RegExp(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/);
+            if (!pattern.test(str)) {
+                $("#refresh").prop("disabled", true);
+                return false;
+            } else {
+                $("#refresh").prop("disabled", false);
+                return true;
+            }
+        }
+        var refreshFormats = function refreshFormats(searchTerm) {
+            $.post("/link/formats/", {url: searchTerm})
+                .done(function (data) {
+                    console.dir(data.results.formats)
+                    $("#format").empty();
+                    var combined_options = "", audio_options = "", video_options = "";
+                    data.results.formats.forEach(function (item) {
+                        var option = "<option value='" + item.format_id + "'>";
+                        if (item.format_note !== undefined && item.format_note !== null && item.format_note !== '') {
+                            if (item.format_note === 'DASH video') {
+                                option += " (VIDEO ONLY)" + item.format + "</option>";
+                                video_options += option;
+                            } else if (item.format_note === 'DASH audio') {
+                                option += " (AUDIO ONLY) " + item.format + "</option>";
+                                audio_options += option;
+                            }
+                        } else {
+                            option += item.format + " </option>";
+                            combined_options += option;
+                        }
+                    });
+                    console.log(combined_options);
+                    $("#format").append(combined_options);
+                    $("#format").append(video_options);
+                    $("#format").append(audio_options);
+                });
+        };
+
+        $("#url").on('keyup', $.debounce(1000, function () {
+            var searchTerm = $(this)[0].value;
+            if (ValidURL(searchTerm)) {
+                refreshFormats(searchTerm);
+            }
+        }));

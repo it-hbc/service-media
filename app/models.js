@@ -6,6 +6,7 @@ var mediaSchema = new mongoose.Schema({
     account: { type: mongoose.Schema.Types.ObjectId, ref: 'Account' },
     // when creating a user, an email is required
     file_id: { type: String, required: true },
+    url: { type: String, required: true},
     path: { type: String, required: true },
     // a user must also have a password
     status: { type: String, required: true, default: 'started' },

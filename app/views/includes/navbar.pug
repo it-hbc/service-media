@@ -11,6 +11,8 @@ header.header
                 if auth
                     li(class={current: currentUrl === '/'})
                         a(href="/") Search
+                    li(class={current: currentUrl === '/link'})
+                        a(href="/link") Direct Link
                     li(class={current: currentUrl === '/files'})
                         a(href="/files") Files
                     li(class={current: currentUrl === '/logout'})

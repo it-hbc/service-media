@@ -14,15 +14,14 @@ html(lang='en')
     script(src='/javascripts/modernizr.js')
     script(src='/javascripts/pace.min.js')
   body
-    section.s-pageheader.s-pageheader--home
+    section(class={'s-pageheader': true, 's-pageheader--home': (currentUrl==='/')})
       include includes/navbar.pug
-      .pageheader-content.row
-        block search
+      block header
     section.s-content
       block content
 
-    .preloader
-      #loader
+    div#preloader
+      div#loader
         .line-scale
           div
           div
